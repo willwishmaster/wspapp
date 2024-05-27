@@ -21,8 +21,8 @@ def reply():
     user = users.find_one({"number": number})
     
     if bool(user) == False:
-        res.message('''Hi, thanks for contacting *The Red Velvet*.\nYou can choose from one of the options below:
-          \n*Type*\n\n1️⃣To *contact* us\n2️⃣To *order* snacks\n3️⃣To know our *working hours*\n4️⃣To get our *address*''')
+        res.message('''Hola, gracias por contactar a *The Red Velvet*.\nPuedes elegir una de las opciones debajo:
+          \n*Tipo*\n\n1️⃣Para *contacto* us\n2️⃣Para *ordenar* bocaditos\n3️⃣Para conocer nuestro *horario de trabajo*\n4️⃣Para obtener nuestra *dirección *''')
         users.insert_one({"number":number, "status":"main", "messages":[]})
     elif user["status"] == "main":
         try:
