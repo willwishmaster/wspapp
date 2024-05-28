@@ -28,10 +28,10 @@ def reply():
         try:
             option = int(content)
         except:
-            res.message("Please choose a valid option!")
+            res.message("Por favor elige una opcion!")
             return str(res)
         if option == 1:
-            res.message("You can contact us through phone or e-mail.\n\n*Phone*: 9484848\n*E-mail*: bakery@valverde.com")
+            res.message("Puedes contactarnos al telefono o e-mail.\n\n*Celular*: 9484848\n*E-mail*: bakery@valverde.com")
         elif option == 2:
             res.message("You have entered *ordering mode*.")            
             users.update_one({"number":number},{"$set":{"status":"ordering"}})
