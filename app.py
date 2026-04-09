@@ -33,42 +33,42 @@ def reply():
         if option == 1:
             res.message("Puedes contactarnos al telefono o e-mail.\n\n*Celular*: 9484848\n*E-mail*: bakery@valverde.com")
         elif option == 2:
-            res.message("You have entered *ordering mode*.")            
+            res.message("Has ingresado a *modo de pedido*.")            
             users.update_one({"number":number},{"$set":{"status":"ordering"}})
-            res.message('''You can select one of the following cakes to order:
+            res.message('''Puedes seleccionar uno de los siguientes pasteles para pedir:
                         \n1️⃣Red Velvet\n2️⃣Dark Forest\n3️⃣Ice Cream Cake\n4️⃣Plum Cake\n5️⃣Sponge Cake\n6️⃣Genoise Cake\n7️⃣Angel Cake\n8️⃣Carrot Cake''')
         elif option == 3:
-            res.message("We open every day from *9 AM to 9 PM*")
+            res.message("Abrimos todos los días de *9 AM a 9 PM*")
         elif option == 4:
-            res.message("We have many centres across the city. Our main center is at *4/50, New York City*")
+            res.message("Tenemos muchos centros en toda la ciudad. Nuestro centro principal está en *4/50, New York City*")            
     elif user["status"] == "ordering":
         try:
             option = int(content)
         except:
-            res.message("Please choose a valid option!")
+            res.message("¡Por favor, elige una opción válida!")
             return str(res)
         if option == 0:
             users.update_one({"number":number},{"$set":{"status":"main"}})
-            res.message('''Hi, thanks for contacting *The Red Velvet*.\nYou can choose from one of the options below:
-                        \n*Type*\n\n1️⃣To *contact* us\n2️⃣To *order* snacks\n3️⃣To know our *working hours*\n4️⃣To get our *address*''')
+            res.message('''Hola, gracias por contactar con *The Red Velvet*.\nPuedes elegir una de las siguientes opciones:                        
+                        \n*Tipo*\n\n1️⃣Para *contactarnos*\n2️⃣Para *pedir* snacks\n3️⃣Para conocer nuestro *horario de atención*\n4️⃣Para obtener nuestra *dirección*''')
         elif 1<=option <= 9:
             cakes = ["Red Velvet","Dark Forest","Ice Cream Cake","Plum Cake","Sponge Cake","Genoise Cake","Angel Cake","Carrot Cake"]
             selected = cakes[option -1 ]
             users.update_one({"number":number},{"$set":{"status":"address"}})
             users.update_one({"number":number},{"$set":{"item":selected}})
-            res.message("Great choice 😛")
-            res.message("Please Enter your address to confirm the order")
-        else:
-            res.message("Please choose a valid option!")
+            res.message("¡Gran elección 😛!")
+            res.message("Por favor, ingresa tu dirección para *confirmar* el pedido")
+        else:            
+            res.message("¡Por favor, elige una opción válida!")
     elif user["status"] == "address":
         selected = user["item"]
-        res.message("Thanks for trust on us!")
-        res.message(f"Your order for {selected} has been received and will be delivered within an hour")
+        res.message("Gracias por confiar en nosotros!")
+        res.message(f"Tu pedido de {selected} ha sido recibido y será entregado dentro de una hora")
         orders.insert_one({"number":number, "item": selected, "address":content,"order_time": datetime.now()})
         users.update_one({"number":number},{"$set":{"status":"ordered"}})
     elif user["status"] == "ordered":
-        res.message('''Hi, thanks for contacting *The Red Velvet*.\nYou can choose from one of the options below:
-          \n*Type*\n\n1️⃣To *contact* us\n2️⃣To *order* snacks\n3️⃣To know our *working hours*\n4️⃣To get our *address*''')
+        res.message('''Hola, gracias por contactar con *The Red Velvet*.\nPuedes elegir una de las siguientes opciones:                        
+                        \n*Tipo*\n\n1️⃣Para *contactarnos*\n2️⃣Para *pedir* snacks\n3️⃣Para conocer nuestro *horario de atención*\n4️⃣Para obtener nuestra *dirección*''')
         users.update_one({"number":number},{"$set":{"status":"main"}})
         
     users.update_one({"number":number},{"$push":{"messages":{"content": content, "date": datetime.now()}}})
